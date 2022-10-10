@@ -21,3 +21,7 @@ code {
 .cell {
   padding: 5px;
 }
+
+.show {
+  background: red;
+}

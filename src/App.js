@@ -1,33 +1,16 @@
 //import logo from './logo.svg';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-function cl(item) { return console.log(item) }
-let componentCount = 5;
+import { field, cl, initialization } from './script.js';
+
+
 
 let compArray = [1, 2, 3, 4];
+//cl('start')
+initialization(10, 10, 10)
 
-let width = 10;
-let height = 10;
+//console.table(field[0])
 
-let field = [];
-let indexCounter = 0;
-for (let i = 0; i < height; i++) {
-
-  let row = [];
-  for (let j = 0; j < width; j++) {
-    row.push({
-      index: indexCounter
-    })
-    indexCounter++
-
-  }
-
-  field.push(row)
-
-}
-console.log('start')
-
-console.table(field[0])
 function Example() {
   // Declare a new state variable, which we'll call "count"
   const [count, setCount] = useState(0);
@@ -42,13 +25,45 @@ function Example() {
   );
 }
 
+function Cell({ item }) {
+
+  function handleClick(e) {
+
+    e.preventDefault();
+
+    if (e.type === "click") {
+      console.log("Left click", e.target);
 
 
+    } else if (e.type === "contextmenu") {
+      console.log("Right click", e.target);
+    }
+    // console.log('You clicked submit.', status);
+    //setStatus(!status);
+
+  }
+
+  return (
+    <div
+      //key={item.indexCounter}
+      className={'cell' + ( item.show ? " show" : "")}
+      cellId={item.id}
+      onClick={handleClick} onContextMenu={handleClick}
+    >
+      {item.id}
+    </div>
+  )
+}
 function Field() {
-  return <div class='field_wrapper'>
+  //  [field, setField] = useState(field);
+
+  return <div className='field_wrapper'>
     {field.map((row) => (
-      <div class='row'>
-        {row.map((item)=>(<div class ='cell' >{item.index}</div>))}
+      <div className='row'>
+        {row.map((item) => {
+          //Cell(item)
+          return <Cell key={item.id} item={item} />
+        })}
       </div>
     ))}
   </div>
@@ -84,18 +99,24 @@ function Form() {
   );
 }
 function App() {
-
+  const [title, setTitle] = useState("Default Title");
+  //setTitle()
   return (
-    <div className="App">
-      <header className="App-header">
-        { Field()}{
 
-          compArray.map((item) => (
-            <div>component {item}</div>
-          ))}
+    <div className="App">
+
+      <header className="App-header">
+        <Field />
+
         {
-          Example()}{
-          Form()
+          //compArray.map((item) => (
+          //  <div>component {item}</div>
+          //))
+        }
+
+        {
+          //   <Example/>
+          // <Form/>
         }
       </header>
     </div>
