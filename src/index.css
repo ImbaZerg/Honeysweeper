@@ -25,3 +25,7 @@ code {
 .show {
   background: red;
 }
+
+.nonactive {
+  color: gray;
+}
