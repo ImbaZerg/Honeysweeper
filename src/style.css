@@ -1,0 +1,136 @@
+body {
+    background-color: rgb(32 33 36);
+}
+
+
+.wrapper {
+    max-width: fit-content;
+    margin: auto;
+}
+
+.sapper {
+    background-color: rgb(238, 238, 150);
+    border: 3px solid black;
+    padding: 5px;
+    display: inline-block;
+    padding-top: 30px;
+}
+
+.sapper div {
+    margin: 0;
+    padding: 0;
+    height: 50px;
+    margin: 1px;
+}
+
+.sapper img {
+    width: 50px;
+    height: 50px;
+    padding: 1px;
+    display: block;
+    box-sizing: border-box;
+    border-radius: 5px;
+    z-index: 1;
+    position: relative;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.row div:nth-child(2n) {
+
+    margin-top: -25px;
+    margin-left: -9px;
+    margin-right: -9px;
+
+}
+
+.row div:last-child {
+    margin-right: unset;
+}
+
+.row div {
+    position: relative;
+    background-size: contain;
+
+    width: 50px;
+    height: 50px;
+}
+
+.row div::after {
+    content: '';
+
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+
+    background-size: contain;
+
+    width: 50px;
+    height: 50px;
+
+
+}
+
+div[data-cell-bg='0']::after {
+    background-image: url("img/bg1.png");
+}
+
+div[data-cell-bg='1']::after {
+    background-image: url("img/bg2.png");
+}
+
+div[data-cell-bg='2']::after {
+    background-image: url("img/bg3.png");
+}
+
+div[data-poten='1']::after {
+    background-image: url("img/poten.png");
+}
+
+div[data-open='1']::after {
+    opacity: 0.5;
+
+}
+
+#restart,
+.mines {
+    margin-right: 5px;
+    background-color: #f7881e;
+    border: 3px solid black;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: cursive;
+}
+
+#restart:hover {
+    transition: all 0.3s;
+    color: #fff;
+}
+
+
+#restart:hover img {
+    transform: rotate(360deg);
+    transition: transform 1s ease-in-out;
+}
+
+.menu {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+
+}
+
+#mines {
+    padding-left: 6px;
+}
