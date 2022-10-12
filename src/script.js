@@ -26,7 +26,7 @@ export function getMatrix(height, width) {
                 id: indexCounter++,
                 offset: x % 2 ? false : true,
                 bg: Math.floor(Math.random() * 3),
-                outline: Math.floor(Math.random() * 4),
+                outline: Math.floor(Math.random() * 3),
                 active: x > 0 && y > 0 && x <= width && y <= height ? true : false,
                 number: 0,
                 x,
@@ -61,7 +61,7 @@ export function getNormalizedObject(matrix) {
 
                     left: false,
                     right: false,
-                    show: true,
+                    show: false,
                     flag: false,
                     mine: false,
                     poten: false,
@@ -87,38 +87,31 @@ export function getNormalizedObject(matrix) {
         let horizontal = [x - 1, x, x + 1];
 
 
-        if (cell.offset) {
+        for (let v in vertical) {
+            for (let h in horizontal) {
+                if (y === vertical[v] && horizontal[h] === x) { } else {
+                    if (matrix[vertical[v]][horizontal[h]].active) {
+                        let condition = false;
+                        if (cell.offset) {
+                            condition = (vertical[v] == (y - 1) && horizontal[h] !== x)
+                        } else {
+                            condition = (vertical[v] == (y + 1) && horizontal[h] !== x)
+                        }
 
 
-            for (let v in vertical) {
-                for (let h in horizontal) {
-                    if (y === vertical[v] && horizontal[h] === x) { } else {
-                        if (matrix[vertical[v]][horizontal[h]].active) {
-                            console.log("t", v,h )
-                            if (vertical[v] ==(y - 1)  && horizontal[h] !== x) { } else {
-                                surrounding.push(matrix[vertical[v]][horizontal[h]].id)
-                            }
+                        if (!condition)  {
+                            surrounding.push(matrix[vertical[v]][horizontal[h]].id)
                         }
                     }
                 }
             }
-        } else {
-
-            for (let v in vertical) {
-                for (let h in horizontal) {
-                    if (y === vertical[v] && horizontal[h] === x) { } else {
-                        if (matrix[vertical[v]][horizontal[h]].active) {
-
-                            if (vertical[v] ==(y + 1)  && horizontal[h] !== x) { } else {
-                                surrounding.push(matrix[vertical[v]][horizontal[h]].id)
-                            }
-
-                        }
-                    }
-                }
-            }
-
         }
+
+
+
+
+
+
 
 
         return surrounding
@@ -144,7 +137,7 @@ function setMines(normalizedObject) {
         let freeCount = freeCells.length;
         let number = Math.floor(Math.random() * freeCount);
         normalizedObject[freeCells[number]].mine = true;
-       
+
         let surrounding = normalizedObject[freeCells[number]].surrounding;
         console.log('surrounding', normalizedObject[freeCells[number]].id, surrounding)
         for (let sib in surrounding) {

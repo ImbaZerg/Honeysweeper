@@ -87,7 +87,7 @@ export default function App() {
     e.preventDefault();
 
     // google spread operator
-    const showCell = { ...item, show: !item.show, flag: false };
+    const showCell = { ...item, show: true, flag: false };
     const makrMine = { ...item, flag: !item.flag };
 
 
@@ -98,22 +98,17 @@ export default function App() {
 
     if (e.type === "click") {
       console.log("Left click", e.target);
-      if(item.number === 0 ){
-        let spred = [];
-
-        for(let poten in item.surrounding){
-
-          spred.push(item.surrounding[poten])
-        }
-
-        spread(spred);
-
-
+      if (item.number === 0 && !item.mine) {
+        let spreadArr = [item.id];
+        spread(spreadArr, item);
         
+        spreadArr.map((cursor)=>{
+          setCell({...normalized[cursor], show: true })
+        })
       } else {
         setCell(showCell);
       }
-    
+
 
     } else if (e.type === "contextmenu") {
       console.log("Right click", e.target);
@@ -134,9 +129,27 @@ export default function App() {
     //setStatus(!status);
 
     // перенести в scripts
-    function spread (spread){
+    function spread(spreadArr, item) {
 
- 
+      for (let poten in item.surrounding) {
+
+        let cursor = item.surrounding[poten];
+
+        if (spreadArr.indexOf(cursor) < 0) {
+          spreadArr.push(cursor);
+          console.log('cursor.number ',normalized[cursor].number,cursor  )
+        
+          if (normalized[cursor].number === 0) {
+            spread(spreadArr, normalized[cursor]);
+          }
+        }
+       
+
+      }
+
+      return spreadArr;
+
+
     }
     function setCell(item) {
       setNormalized((normalized) => ({
@@ -161,16 +174,6 @@ export default function App() {
       <header className="App-header">
         <Field matrix={matrix} normalized={normalized} handleClick={handleClick} />
 
-        {
-          //compArray.map((item) => (
-          //  <div>component {item}</div>
-          //))
-        }
-
-        {
-          //   <Example/>
-          // <Form/>
-        }
       </header>
     </div>
   );
