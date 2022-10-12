@@ -3,7 +3,8 @@ import {Cell} from './';
 export default function Field(props) {
     //  [field, setField] = useState(field);
   
-    return <div className='field_wrapper'>
+    return <div className='sapper'>
+      <div className='field_wrapper'>
       {props.matrix.map((row, i) => (
         <div key={i} className='row'>
           {row.map((item) => {
@@ -12,5 +13,6 @@ export default function Field(props) {
           })}
         </div>
       ))}
+      </div>
     </div>
   }

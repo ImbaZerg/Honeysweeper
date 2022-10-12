@@ -22,8 +22,12 @@ code {
   padding: 5px;
 }
 
-.show {
+.show_ {
   background: red;
+}
+
+.flag_ {
+  background: green;
 }
 
 .nonactive {

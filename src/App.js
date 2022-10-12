@@ -1,13 +1,13 @@
 //import logo from './logo.svg';
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { cl, initialization, getMatrix, getNormalizedObject } from './script.js';
-import { Field} from './components';
+import { cl, initialization, getMatrix, getNormalizedObject, } from './script.js';
+import { Field } from './components';
 
 
 let compArray = [1, 2, 3, 4];
 //cl('start')
-initialization(10, 10, 10)
+//initialization(6, 10, 10)
 
 
 
@@ -69,7 +69,7 @@ export default function App() {
    }, []);
  */
 
-  const [matrix, setMatrix] = useState(() => getMatrix(10, 10));
+  const [matrix, setMatrix] = useState(() => getMatrix(6, 10));
   const [normalized, setNormalized] = useState(() => getNormalizedObject(matrix));
   const [title, setTitle] = useState("Default Title");
   //setTitle()
@@ -85,23 +85,71 @@ export default function App() {
 
     e.preventDefault();
 
+    // google spread operator
+    const showCell = { ...item, show: !item.show, flag: false };
+    const makrMine = { ...item, flag: !item.flag };
+
+
+
     if (!item.active) {
       return
     }
 
     if (e.type === "click") {
       console.log("Left click", e.target);
+      if(item.number === 0 ){
+        let spred = [];
 
-      // google spread operator
-      const showCell = { ...item, show: !item.show };
+        for(let poten in item.surrounding){
 
-      setCell(showCell);
+          spred.push(item.surrounding[poten])
+        }
+
+        spread(spred);
+
+
+        
+      } else {
+        setCell(showCell);
+      }
+    
 
     } else if (e.type === "contextmenu") {
       console.log("Right click", e.target);
+      funMakrMine();
+
+      if (e.shiftKey) {
+        console.debug("Ctrl+click has just happened!");
+
+        for (let sib of normalized[item.id].surrounding) {
+          cl(sib)
+          const showSib = { ...normalized[sib], show: !normalized[sib].show }
+          cl(showSib)
+          setCell(showSib);
+        }
+      }
     }
     // console.log('You clicked submit.', status);
     //setStatus(!status);
+
+    // перенести в scripts
+    function spread (spread){
+
+ 
+    }
+    function setCell(item) {
+      setNormalized((normalized) => ({
+        ...normalized,
+        [item.id]: item,
+      }));
+    }
+
+    function funMakrMine() {
+      if (!item.show && item.active) {
+        setCell(makrMine)
+      }
+
+    }
 
   }
 

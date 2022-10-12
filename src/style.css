@@ -11,19 +11,25 @@ body {
 .sapper {
     background-color: rgb(238, 238, 150);
     border: 3px solid black;
-    padding: 5px;
     display: inline-block;
     padding-top: 30px;
+    padding: 5px;
+    overflow: hidden;
+
+    
+}
+.field_wrapper{
+    margin: -20px -30px;
 }
 
-.sapper div {
+.field_wrapper div {
     margin: 0;
     padding: 0;
     height: 50px;
     margin: 1px;
 }
 
-.sapper img {
+.sapper .img {
     width: 50px;
     height: 50px;
     padding: 1px;
@@ -38,6 +44,8 @@ body {
     display: flex;
     flex-direction: row;
     position: relative;
+
+    
 }
 
 .row div:nth-child(2n) {
@@ -93,9 +101,53 @@ div[data-poten='1']::after {
     background-image: url("img/poten.png");
 }
 
-div[data-open='1']::after {
-    opacity: 0.5;
+.outline {
+    background: url("img/outline.png");
+}
 
+.outline_w_shadow {
+    background: url("img/outline_w_shadow.png");
+}
+
+.outline_open {
+    background: url("img/outline_open.png");
+}
+
+.number1 {
+    background: url("img/number1.png");
+}
+
+.number2 {
+    background: url("img/number2.png");
+}
+
+.number3 {
+    background: url("img/number3.png");
+}
+
+.number4 {
+    background: url("img/number4.png");
+}
+
+.number5 {
+    background: url("img/number5.png");
+}
+
+.number6 {
+    background: url("img/number6.png");
+}
+
+.mine {
+    background: url("img/mine.png");
+}
+
+.flag {
+    background: url("img/flag.png");
+}
+
+
+.show::after {
+    opacity: 0.5;
 }
 
 #restart,
