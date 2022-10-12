@@ -1,67 +1,13 @@
-//import logo from './logo.svg';
+// npm start
 // https://honeysweeper.konstantinshiev.repl.co/
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { cl, initialization, getMatrix, getNormalizedObject, } from './script.js';
-import { Field } from './components';
+import { Field, Modal, Menu } from './components';
 
-
-let compArray = [1, 2, 3, 4];
-//cl('start')
-//initialization(6, 10, 10)
-
-
-
-function Example() {
-  // Declare a new state variable, which we'll call "count"
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
-    </div>
-  );
-}
-
-
-
-
-function Form() {
-  //let status = true;
-  let [status, setStatus] = useState(true);
-  function handleClick(item, e) {
-    e.preventDefault();
-
-
-    if (e.type === "click" && e.type === "contextmenu") {
-      console.log("Both click");
-    }
-
-    if (e.type === "click") {
-      console.log("Left click");
-
-    } else if (e.type === "contextmenu") {
-      console.log("Right click");
-    }
-    console.log('You clicked submit.', status);
-    setStatus(!status);
-  }
-
-  return (
-    <div >
-      <button onClick={handleClick} onContextMenu={handleClick}
-        type="submit">
-        {status ? "check" : "unchek"}
-      </button>
-    </div>
-  );
-}
 
 export default function App() {
-
+  
   /* 
   useEffect(() => {
      return () => {
@@ -69,10 +15,13 @@ export default function App() {
      };
    }, []);
  */
+  const [gameRunning, setGameRunning] = useState(true);
+  let [mineCount, setMineCount] = useState(20);
 
-  const [matrix, setMatrix] = useState(() => getMatrix(6, 10));
+
+  const [matrix, setMatrix] = useState(() => getMatrix(9, 12));
   const [normalized, setNormalized] = useState(() => getNormalizedObject(matrix));
-  const [title, setTitle] = useState("Default Title");
+  
   //setTitle()
   // console.table(matrix[2])
   function setCell(item) {
@@ -86,15 +35,14 @@ export default function App() {
 
     e.preventDefault();
 
+    if (!item.active || !gameRunning) {
+      return
+    }
+
     // google spread operator
     const showCell = { ...item, show: true, flag: false };
     const makrMine = { ...item, flag: !item.flag };
 
-
-
-    if (!item.active) {
-      return
-    }
 
     if (e.type === "click") {
       console.log("Left click", e.target);
@@ -107,12 +55,17 @@ export default function App() {
         })
       } else {
         setCell(showCell);
+        if(item.mine===true){
+          setGameRunning(false)
+        }
       }
 
 
     } else if (e.type === "contextmenu") {
       console.log("Right click", e.target);
       funMakrMine();
+console.log(item.flag, mineCount)
+      item.flag? setMineCount(mineCount--):setMineCount(mineCount++)
 
       if (e.shiftKey) {
         console.debug("Ctrl+click has just happened!");
@@ -151,6 +104,7 @@ export default function App() {
 
 
     }
+
     function setCell(item) {
       setNormalized((normalized) => ({
         ...normalized,
@@ -173,7 +127,8 @@ export default function App() {
 
       <header className="App-header">
         <Field matrix={matrix} normalized={normalized} handleClick={handleClick} />
-
+        <Menu mines={mineCount}></Menu>
+        <Modal></Modal>
       </header>
     </div>
   );

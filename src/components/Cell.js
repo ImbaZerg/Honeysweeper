@@ -22,12 +22,12 @@ export default function Cell(props) {
       <div draggable="false"
         className={"img " + (item.show ?
           item.mine ? "mine" :
-            item.number === 0 ? 'outline_open' : "number" + item.number
-          : item.flag ? "flag" :
+            item.number === 0 ? 'outline_open' : "number" + item.number :
+          item.flag ? "flag" :
             item.outline === 1 ? 'outline_w_shadow' : 'outline')}
-      
+
       ></div>
-    
+
       {item ? item.id : 0}
     </div>
   )

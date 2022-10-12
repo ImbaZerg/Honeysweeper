@@ -124,7 +124,7 @@ export function getNormalizedObject(matrix) {
 
 function setMines(normalizedObject) {
     let freeCells = [];
-    let mines = 10;
+    let mines = 20;
     for (var key in normalizedObject) {
         let cell = normalizedObject[key]
         if (cell.active && cell.mine === false) {
@@ -139,7 +139,7 @@ function setMines(normalizedObject) {
         normalizedObject[freeCells[number]].mine = true;
 
         let surrounding = normalizedObject[freeCells[number]].surrounding;
-        console.log('surrounding', normalizedObject[freeCells[number]].id, surrounding)
+       // console.log('surrounding', normalizedObject[freeCells[number]].id, surrounding)
         for (let sib in surrounding) {
             normalizedObject[surrounding[sib]].number++
         }
