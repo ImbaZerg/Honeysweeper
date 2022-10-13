@@ -64,8 +64,7 @@ export default function App() {
     } else if (e.type === "contextmenu") {
       console.log("Right click", e.target);
       funMakrMine();
-console.log(item.flag, mineCount)
-      item.flag? setMineCount(mineCount--):setMineCount(mineCount++)
+
 
       if (e.shiftKey) {
         console.debug("Ctrl+click has just happened!");
@@ -114,6 +113,8 @@ console.log(item.flag, mineCount)
 
     function funMakrMine() {
       if (!item.show && item.active) {
+       
+      !item.flag? setMineCount(mineCount-1):setMineCount(mineCount+1)
         setCell(makrMine)
       }
 
