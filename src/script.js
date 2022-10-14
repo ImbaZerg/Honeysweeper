@@ -124,7 +124,7 @@ export function getNormalizedObject(matrix) {
 
 function setMines(normalizedObject) {
     let freeCells = [];
-    let mines = 20;
+    let mines = 1;
     for (var key in normalizedObject) {
         let cell = normalizedObject[key]
         if (cell.active && cell.mine === false) {

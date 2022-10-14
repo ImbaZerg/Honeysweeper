@@ -1,5 +1,6 @@
 // npm start
 // https://honeysweeper.konstantinshiev.repl.co/
+// lottie
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { cl, initialization, getMatrix, getNormalizedObject, } from './script.js';
@@ -51,7 +52,11 @@ export default function App() {
         spread(spreadArr, item);
         
         spreadArr.map((cursor)=>{
-          setCell({...normalized[cursor], show: true })
+          if(normalized[cursor].flag){
+            console.log("mineCount", mineCount);
+            setMineCount(mineCount+1)
+          } 
+          setCell({...normalized[cursor], show: true , flag: false})
         })
       } else {
         setCell(showCell);
