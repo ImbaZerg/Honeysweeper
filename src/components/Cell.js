@@ -16,6 +16,7 @@ export default function Cell(props) {
         + item?.active}
       //cellId={item.id}
       data-cell-bg={item.bg}
+      // что значит эта запись
       onClick={item ? (e) => handleClick(item, e) : undefined}
       onContextMenu={item ? (e) => handleClick(item, e) : undefined}
     >

@@ -44,7 +44,7 @@ export function getMatrix(height, width) {
     return matrix;
 }
 
-export function getNormalizedObject(matrix) {
+export function getNormalizedObject(matrix, mines) {
 
     let height = matrix.length;
     let width = matrix[0].length;
@@ -74,7 +74,7 @@ export function getNormalizedObject(matrix) {
 
     }
 
-    setMines(normalizedObject);
+    setMines(normalizedObject, mines);
 
 
     console.warn(normalizedObject)
@@ -122,9 +122,9 @@ export function getNormalizedObject(matrix) {
 
 }
 
-function setMines(normalizedObject) {
+function setMines(normalizedObject, mines) {
     let freeCells = [];
-    let mines = 1;
+   
     for (var key in normalizedObject) {
         let cell = normalizedObject[key]
         if (cell.active && cell.mine === false) {

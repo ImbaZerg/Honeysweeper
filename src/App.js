@@ -1,14 +1,14 @@
 // npm start
 // https://honeysweeper.konstantinshiev.repl.co/
 // lottie
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import { cl, initialization, getMatrix, getNormalizedObject, } from './script.js';
 import { Field, Modal, Menu } from './components';
 
 
 export default function App() {
-  
+
   /* 
   useEffect(() => {
      return () => {
@@ -17,12 +17,15 @@ export default function App() {
    }, []);
  */
   const [gameRunning, setGameRunning] = useState(true);
-  let [mineCount, setMineCount] = useState(20);
+  let [mineCount, setMineCount] = useState(5);
+  let [height, setheight] = useState(4);
+  let [width, setWidth] = useState(12);
 
-
-  const [matrix, setMatrix] = useState(() => getMatrix(9, 12));
-  const [normalized, setNormalized] = useState(() => getNormalizedObject(matrix));
+  const [matrix, setMatrix] = useState(() => getMatrix(height, width));
   
+  const [normalized, setNormalized] = useState(() => getNormalizedObject(matrix, mineCount));
+  
+
   //setTitle()
   // console.table(matrix[2])
   function setCell(item) {
@@ -42,7 +45,7 @@ export default function App() {
 
     // google spread operator
     const showCell = { ...item, show: true, flag: false };
-    const makrMine = { ...item, flag: !item.flag };
+    
 
 
     if (e.type === "click") {
@@ -50,17 +53,17 @@ export default function App() {
       if (item.number === 0 && !item.mine) {
         let spreadArr = [item.id];
         spread(spreadArr, item);
-        
-        spreadArr.map((cursor)=>{
-          if(normalized[cursor].flag){
+
+        spreadArr.map((cursor) => {
+          if (normalized[cursor].flag) {
             console.log("mineCount", mineCount);
-            setMineCount(mineCount+1)
-          } 
-          setCell({...normalized[cursor], show: true , flag: false})
+            setMineCount((mineCount) => mineCount + 1)
+          }
+          setCell({ ...normalized[cursor], show: true, flag: false })
         })
       } else {
         setCell(showCell);
-        if(item.mine===true){
+        if (item.mine === true) {
           setGameRunning(false)
         }
       }
@@ -68,7 +71,7 @@ export default function App() {
 
     } else if (e.type === "contextmenu") {
       console.log("Right click", e.target);
-      funMakrMine();
+      funMakrMine(item);
 
 
       if (e.shiftKey) {
@@ -82,50 +85,68 @@ export default function App() {
         }
       }
     }
-    // console.log('You clicked submit.', status);
-    //setStatus(!status);
+  }
+  // console.log('You clicked submit.', status);
+  //setStatus(!status);
 
-    // перенести в scripts
-    function spread(spreadArr, item) {
+  // перенести в scripts
 
-      for (let poten in item.surrounding) {
 
-        let cursor = item.surrounding[poten];
+  const restart = ()=> {
+    console.log("restart" );
+    //setMatrix (useState(() => getMatrix(height, width)))
+    //setMatrix (newMatrix)
+    //setNormalized (newNormalized)
 
-        if (spreadArr.indexOf(cursor) < 0) {
-          spreadArr.push(cursor);
-          console.log('cursor.number ',normalized[cursor].number,cursor  )
-        
-          if (normalized[cursor].number === 0) {
-            spread(spreadArr, normalized[cursor]);
-          }
+    
+    setMatrix (() => getMatrix(height, width))
+    setNormalized( () => getNormalizedObject(matrix,mineCount))
+    setGameRunning(true)
+    
+  }
+
+  function spread(spreadArr, item) {
+
+    for (let poten in item.surrounding) {
+
+      let cursor = item.surrounding[poten];
+
+      if (spreadArr.indexOf(cursor) < 0) {
+        spreadArr.push(cursor);
+        console.log('cursor.number ', normalized[cursor].number, cursor)
+
+        if (normalized[cursor].number === 0) {
+          spread(spreadArr, normalized[cursor]);
         }
-       
-
       }
-
-      return spreadArr;
 
 
     }
 
-    function setCell(item) {
-      setNormalized((normalized) => ({
-        ...normalized,
-        [item.id]: item,
-      }));
-    }
+    return spreadArr;
 
-    function funMakrMine() {
-      if (!item.show && item.active) {
-       
-      !item.flag? setMineCount(mineCount-1):setMineCount(mineCount+1)
-        setCell(makrMine)
-      }
 
+  }
+
+  function setCell(item) {
+    setNormalized((normalized) => ({
+      ...normalized,
+      [item.id]: item,
+    }));
+  }
+
+  function funMakrMine(item) {
+  const makrMine = { ...item, flag: !item.flag };
+
+    if (!item.show && item.active) {
+
+      !item.flag ? setMineCount(mineCount - 1) : setMineCount(mineCount + 1)
+      setCell(makrMine)
     }
 
   }
+
+
 
   return (
 
@@ -133,7 +154,7 @@ export default function App() {
 
       <header className="App-header">
         <Field matrix={matrix} normalized={normalized} handleClick={handleClick} />
-        <Menu mines={mineCount}></Menu>
+        <Menu mines={mineCount} restart={restart}></Menu>
         <Modal></Modal>
       </header>
     </div>
