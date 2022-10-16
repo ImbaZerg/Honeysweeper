@@ -22,9 +22,9 @@ export default function App() {
   let [width, setWidth] = useState(12);
 
   const [matrix, setMatrix] = useState(() => getMatrix(height, width));
-  
+
   const [normalized, setNormalized] = useState(() => getNormalizedObject(matrix, mineCount));
-  
+
 
   //setTitle()
   // console.table(matrix[2])
@@ -34,6 +34,19 @@ export default function App() {
       [item.id]: item,
     }));
   }
+
+  /* const handleMouseDownUp = useCallback(function 
+    (item, e) {
+      console.log('MEMEMEM', e.type);
+      return;
+    },[]
+  ) */
+
+  function handleMouseDownUp(item, e) {
+    console.log('MEMEMEM', e.type);
+
+  }
+
 
   function handleClick(item, e) {
 
@@ -45,7 +58,7 @@ export default function App() {
 
     // google spread operator
     const showCell = { ...item, show: true, flag: false };
-    
+
 
 
     if (e.type === "click") {
@@ -92,17 +105,12 @@ export default function App() {
   // перенести в scripts
 
 
-  const restart = ()=> {
-    console.log("restart" );
-    //setMatrix (useState(() => getMatrix(height, width)))
-    //setMatrix (newMatrix)
-    //setNormalized (newNormalized)
+  const restart = () => {
 
-    
-    setMatrix (() => getMatrix(height, width))
-    setNormalized( () => getNormalizedObject(matrix,mineCount))
+    setMatrix(() => getMatrix(height, width))
+    setNormalized(() => getNormalizedObject(matrix, mineCount))
     setGameRunning(true)
-    
+
   }
 
   function spread(spreadArr, item) {
@@ -136,7 +144,7 @@ export default function App() {
   }
 
   function funMakrMine(item) {
-  const makrMine = { ...item, flag: !item.flag };
+    const makrMine = { ...item, flag: !item.flag };
 
     if (!item.show && item.active) {
 
@@ -153,7 +161,17 @@ export default function App() {
     <div className="App">
 
       <header className="App-header">
-        <Field matrix={matrix} normalized={normalized} handleClick={handleClick} />
+        <Field {... {
+          matrix,
+          normalized,
+          handleMouseDownUp,
+          handleClick
+        }}
+        /*  matrix={matrix} 
+         normalized={normalized} 
+         handleMouseDownUp = { handleMouseDownUp } 
+         handleClick= { handleClick }  */
+        />
         <Menu mines={mineCount} restart={restart}></Menu>
         <Modal></Modal>
       </header>
