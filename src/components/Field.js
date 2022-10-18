@@ -9,7 +9,12 @@ export default function Field(props) {
         <div key={i} className='row'>
           {row.map((item) => {
   
-            return <Cell key={`${item?.id}${item.y}${item.x}`} item={props.normalized[item?.id]} handleClick={props.handleClick} handleMouseDownUp={props.handleMouseDownUp} />
+            return <Cell 
+            key={`${item?.id}${item.y}${item.x}`} 
+            item={props.normalized[item?.id]} 
+            handleClick={props.handleClick} 
+            handleMouseDown={props.handleMouseDown} 
+            handleMouseUp={props.handleMouseUp} />
           })}
         </div>
       ))}

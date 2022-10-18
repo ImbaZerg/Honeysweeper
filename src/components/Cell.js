@@ -2,11 +2,11 @@
 //import outline_open from "../img/outline_open.png"
 //import outline_w_shadow from "../img/outline_w_shadow.png"
 
-export default function Cell({ item, handleClick, handleMouseDownUp }) {
+export default function Cell({ item, handleClick, handleMouseDown, handleMouseUp }) {
   // console.log(outline);
  // const { item, handleClick, handleMouseDownUp } = props;
 
-  console.log( "handleMouseDownUp", handleMouseDownUp);
+  
 
   return (
     <div
@@ -22,8 +22,8 @@ export default function Cell({ item, handleClick, handleMouseDownUp }) {
       onClick={item ? (e) => handleClick(item, e) : undefined}
       onContextMenu={item ? (e) => handleClick(item, e) : undefined}
       
-      onMouseDown= {item ? (e) => handleMouseDownUp(item, e) : undefined}
-     // onMouseUp= {item ? (e) => handleMouseDownUp(item, e) : undefined}
+      onMouseDown= {item ? (e) => handleMouseDown(item, e) : undefined}
+      onMouseUp= {item ? (e) => handleMouseUp(item, e) : undefined}
 
     >
       <div draggable="false"

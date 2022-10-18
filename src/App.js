@@ -18,6 +18,7 @@ export default function App() {
  */
   const [gameRunning, setGameRunning] = useState(true);
   let [mineCount, setMineCount] = useState(5);
+  let [defaultMineCount, setDefaultMineCount] = useState(5);
   let [height, setheight] = useState(4);
   let [width, setWidth] = useState(12);
 
@@ -42,9 +43,47 @@ export default function App() {
     },[]
   ) */
 
-  function handleMouseDownUp(item, e) {
-    console.log('MEMEMEM', e.type);
+  function handleMouseDown(item, e) {
+    console.log('handleMouseDown', e.type, e.button);
+    if (e.button !== 0) {
+      return
+    }
 
+    if (item.show === true && item.number > 0) {
+
+      let markedMines = item.surrounding.reduce((sum, sibling) =>
+        sum + normalized[sibling].flag, 0
+      )
+
+      if (item.number === markedMines) {
+        console.log('show')
+
+        item.surrounding.map((cursor) => {
+          if (!normalized[cursor].flag) {
+
+            setCell({ ...normalized[cursor], show: true })
+
+            if (normalized[cursor].mine) {
+              setGameRunning(false);
+            }
+          }
+        })
+
+      } else {
+        console.log('hilight')
+
+      }
+
+    }
+
+
+  }
+
+  function handleMouseUp(item, e) {
+    console.log('handleMouseUp', e.type, e);
+    if (e.button !== 0) {
+      return
+    }
   }
 
 
@@ -108,6 +147,10 @@ export default function App() {
   const restart = () => {
 
     setMatrix(() => getMatrix(height, width))
+    console.log('mineCount',  mineCount, defaultMineCount);
+    setMineCount(defaultMineCount);
+    console.log('mineCount',  mineCount, defaultMineCount);
+
     setNormalized(() => getNormalizedObject(matrix, mineCount))
     setGameRunning(true)
 
@@ -121,7 +164,7 @@ export default function App() {
 
       if (spreadArr.indexOf(cursor) < 0) {
         spreadArr.push(cursor);
-        console.log('cursor.number ', normalized[cursor].number, cursor)
+        //console.log('cursor.number ', normalized[cursor].number, cursor)
 
         if (normalized[cursor].number === 0) {
           spread(spreadArr, normalized[cursor]);
@@ -164,13 +207,11 @@ export default function App() {
         <Field {... {
           matrix,
           normalized,
-          handleMouseDownUp,
+          handleMouseDown,
+          handleMouseUp,
           handleClick
         }}
-        /*  matrix={matrix} 
-         normalized={normalized} 
-         handleMouseDownUp = { handleMouseDownUp } 
-         handleClick= { handleClick }  */
+
         />
         <Menu mines={mineCount} restart={restart}></Menu>
         <Modal></Modal>
