@@ -123,6 +123,7 @@ export function getNormalizedObject(matrix, mines) {
 }
 
 function setMines(normalizedObject, mines) {
+    console.log('setMines', mines);
     let freeCells = [];
    
     for (var key in normalizedObject) {

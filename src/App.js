@@ -17,8 +17,8 @@ export default function App() {
    }, []);
  */
   const [gameRunning, setGameRunning] = useState(true);
-  let [mineCount, setMineCount] = useState(5);
-  let [defaultMineCount, setDefaultMineCount] = useState(5);
+  const [defaultMineCount, setDefaultMineCount] = useState(5);
+  const [mineCount, setMineCount] = useState(5);
   let [height, setheight] = useState(4);
   let [width, setWidth] = useState(12);
 
@@ -44,7 +44,7 @@ export default function App() {
   ) */
 
   function handleMouseDown(item, e) {
-    console.log('handleMouseDown', e.type, e.button);
+    //console.log('handleMouseDown', e.type, e.button);
     if (e.button !== 0) {
       return
     }
@@ -56,7 +56,7 @@ export default function App() {
       )
 
       if (item.number === markedMines) {
-        console.log('show')
+      //  console.log('show')
 
         item.surrounding.map((cursor) => {
           if (!normalized[cursor].flag) {
@@ -80,7 +80,7 @@ export default function App() {
   }
 
   function handleMouseUp(item, e) {
-    console.log('handleMouseUp', e.type, e);
+    //console.log('handleMouseUp', e.type, e);
     if (e.button !== 0) {
       return
     }
@@ -101,14 +101,14 @@ export default function App() {
 
 
     if (e.type === "click") {
-      console.log("Left click", e.target);
+      //console.log("Left click", e.target);
       if (item.number === 0 && !item.mine) {
         let spreadArr = [item.id];
         spread(spreadArr, item);
 
         spreadArr.map((cursor) => {
           if (normalized[cursor].flag) {
-            console.log("mineCount", mineCount);
+            //console.log("mineCount", mineCount);
             setMineCount((mineCount) => mineCount + 1)
           }
           setCell({ ...normalized[cursor], show: true, flag: false })
@@ -122,7 +122,7 @@ export default function App() {
 
 
     } else if (e.type === "contextmenu") {
-      console.log("Right click", e.target);
+      //console.log("Right click", e.target);
       funMakrMine(item);
 
 
@@ -143,15 +143,19 @@ export default function App() {
 
   // перенести в scripts
 
+ function  useConsoleWarn(name, value) {
+    useEffect(() => {
+      console.warn(`${name} ${value}`);
+    }, [value]);
+  }
+  useConsoleWarn('mineCount',  mineCount)
 
   const restart = () => {
+    setMineCount(defaultMineCount);
 
     setMatrix(() => getMatrix(height, width))
-    console.log('mineCount',  mineCount, defaultMineCount);
-    setMineCount(defaultMineCount);
-    console.log('mineCount',  mineCount, defaultMineCount);
-
-    setNormalized(() => getNormalizedObject(matrix, mineCount))
+    
+    setNormalized(() => getNormalizedObject(matrix, defaultMineCount))
     setGameRunning(true)
 
   }
