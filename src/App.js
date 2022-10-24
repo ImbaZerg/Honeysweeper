@@ -3,8 +3,11 @@
 // lottie
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
-import { cl, initialization, getMatrix, getNormalizedObject, } from './script.js';
+import { cl, initialization } from './script.js';
 import { Field, Modal, Menu } from './components';
+//import { Minesweeper } from './minesweeper.js';
+import Minesweeper from './minesweeper.js';
+
 
 
 export default function App() {
@@ -16,25 +19,30 @@ export default function App() {
      };
    }, []);
  */
+
+
+
   const [gameRunning, setGameRunning] = useState(true);
   const [defaultMineCount, setDefaultMineCount] = useState(5);
   const [mineCount, setMineCount] = useState(5);
+
+
   let [height, setheight] = useState(4);
   let [width, setWidth] = useState(12);
 
-  const [matrix, setMatrix] = useState(() => getMatrix(height, width));
+  const minesweeperClass = require('./minesweeper.js');
+  let minesweeper = new Minesweeper(height, width, mineCount);
+  console.log(minesweeper);
 
-  const [normalized, setNormalized] = useState(() => getNormalizedObject(matrix, mineCount));
+  const [matrix, setMatrix] = useState(() => minesweeper.matrix);
+
+  const [normalized, setNormalized] = useState(() => minesweeper.normalizedObject);
+
 
 
   //setTitle()
   // console.table(matrix[2])
-  function setCell(item) {
-    setNormalized((normalized) => ({
-      ...normalized,
-      [item.id]: item,
-    }));
-  }
+
 
   /* const handleMouseDownUp = useCallback(function 
     (item, e) {
@@ -44,38 +52,7 @@ export default function App() {
   ) */
 
   function handleMouseDown(item, e) {
-    //console.log('handleMouseDown', e.type, e.button);
-    if (e.button !== 0) {
-      return
-    }
-
-    if (item.show === true && item.number > 0) {
-
-      let markedMines = item.surrounding.reduce((sum, sibling) =>
-        sum + normalized[sibling].flag, 0
-      )
-
-      if (item.number === markedMines) {
-      //  console.log('show')
-
-        item.surrounding.map((cursor) => {
-          if (!normalized[cursor].flag) {
-
-            setCell({ ...normalized[cursor], show: true })
-
-            if (normalized[cursor].mine) {
-              setGameRunning(false);
-            }
-          }
-        })
-
-      } else {
-        console.log('hilight')
-
-      }
-
-    }
-
+    minesweeper.handleMouseDown(item, e)
 
   }
 
@@ -143,45 +120,25 @@ export default function App() {
 
   // перенести в scripts
 
- function  useConsoleWarn(name, value) {
+  function useConsoleWarn(name, value) {
     useEffect(() => {
       console.warn(`${name} ${value}`);
     }, [value]);
   }
-  useConsoleWarn('mineCount',  mineCount)
+  useConsoleWarn('mineCount', mineCount)
 
   const restart = () => {
     setMineCount(defaultMineCount);
 
-    setMatrix(() => getMatrix(height, width))
-    
-    setNormalized(() => getNormalizedObject(matrix, defaultMineCount))
-    setGameRunning(true)
+    minesweeper = new Minesweeper(height, width, defaultMineCount)
+    setMatrix(() => minesweeper.matrix)
+
+    setNormalized(() => minesweeper.normalizedObject)
+    minesweeper.gameRunning = true;
 
   }
 
-  function spread(spreadArr, item) {
-
-    for (let poten in item.surrounding) {
-
-      let cursor = item.surrounding[poten];
-
-      if (spreadArr.indexOf(cursor) < 0) {
-        spreadArr.push(cursor);
-        //console.log('cursor.number ', normalized[cursor].number, cursor)
-
-        if (normalized[cursor].number === 0) {
-          spread(spreadArr, normalized[cursor]);
-        }
-      }
-
-
-    }
-
-    return spreadArr;
-
-
-  }
+  
 
   function setCell(item) {
     setNormalized((normalized) => ({
